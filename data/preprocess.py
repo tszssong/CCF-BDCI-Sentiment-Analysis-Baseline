@@ -1,20 +1,27 @@
 import pandas as pd
 import os
 import random
+import numpy as np
 
-
-
-
-train_df=pd.read_csv("Train_DataSet.csv")
-train_label_df=pd.read_csv("Train_DataSet_Label.csv")
-test_df=pd.read_csv("Test_DataSet.csv")
-train_df=train_df.merge(train_label_df,on='id',how='left')
+train_df=pd.read_csv('nCoV_100k_train.labled11.csv')
+test_df=pd.read_csv('nCov_10k_test11.csv')
+print('error:',train_df[train_df['label']=='-'])
+print('error:',train_df[train_df['label']=='·'])
 train_df['label']=train_df['label'].fillna(-1)
 train_df=train_df[train_df['label']!=-1]
 train_df['label']=train_df['label'].astype(int)
+#print('error:',train_df[np.logical_and( np.logical_and(train_df['label']!='2',train_df['label']!='1'),\
+ #                                       train_df['label']!='0')])
+print('error:',train_df[np.logical_and( np.logical_and(train_df['label']!=2,train_df['label']!=1),\
+                                        train_df['label']!=0)])
+del train_df['time']
+del train_df['video']
+del train_df['img']
 test_df['label']=0
-
 test_df['content']=test_df['content'].fillna('无')
+del test_df['time']
+del test_df['video']
+del test_df['img']
 train_df['content']=train_df['content'].fillna('无')
 test_df['title']=test_df['title'].fillna('无')
 train_df['title']=train_df['title'].fillna('无')

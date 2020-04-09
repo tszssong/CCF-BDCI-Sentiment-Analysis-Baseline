@@ -20,7 +20,7 @@ from __future__ import absolute_import
 import argparse
 import csv
 import logging
-import os
+import os,sys
 import random
 import sys
 from io import open
@@ -525,6 +525,7 @@ def main():
                         print("="*80)
                     else:
                         print("="*80)
+                    sys.stdout.flush()
     if args.do_test:
         del model
         gc.collect()
@@ -577,6 +578,7 @@ def main():
             gold_labels=np.concatenate(gold_labels,0)
             logits=np.concatenate(inference_labels,0)
             print(flag, accuracy(logits, gold_labels))
+            sys.stdout.flush()
             if flag=='test':
                 df=pd.read_csv(os.path.join(args.data_dir, file))
                 df['label_0']=logits[:,0]

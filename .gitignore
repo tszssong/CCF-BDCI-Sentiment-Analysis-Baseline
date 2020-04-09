@@ -1,0 +1,8 @@
+*__pycache__*
+*.csv
+data/*
+*.bin
+model_bert_wwm_ext*
+chinese_roberta/*
+chinese_wwm_ex_bert/*
+chinese_xlnet_mid/*

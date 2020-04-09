@@ -1,7 +1,7 @@
-export CUDA_VISIBLE_DEVICES=0,1,2,3
+export CUDA_VISIBLE_DEVICES=3
 for((i=0;i<5;i++));  
 do   
-
+mkdir ./model_bert_wwm_ext${i}
 python run_bert.py \
 --model_type bert \
 --model_name_or_path ./chinese_wwm_ex_bert \
@@ -23,7 +23,7 @@ python run_bert.py \
 --learning_rate 5e-6 \
 --adam_epsilon 1e-6 \
 --weight_decay 0 \
---train_steps 5000 ;
+--train_steps 5000 2>&1 | tee ./model_bert_wwm_ext${i}/log
 
 done  
 
