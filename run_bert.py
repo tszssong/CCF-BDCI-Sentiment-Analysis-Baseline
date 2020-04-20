@@ -181,7 +181,8 @@ def _truncate_seq_pair(tokens_a, tokens_b, max_length):
 
 def accuracy(out, labels):
     outputs = np.argmax(out, axis=1)
-    return f1_score(labels,outputs,labels=[0,1,2],average='macro')
+    #return f1_score(labels,outputs,labels=[0,1,2],average='macro')
+    return f1_score(labels,outputs,labels=[0,1,2,3,4,5,6,7,8,9,10,11],average='macro')
 
 def select_field(features, field):
     return [
@@ -295,6 +296,7 @@ def main():
                         help="For distributed training: local_rank")
     parser.add_argument('--server_ip', type=str, default='', help="For distant debugging.")
     parser.add_argument('--server_port', type=str, default='', help="For distant debugging.")
+    parser.add_argument('--num-classes', type=int, default=3, help="number class")
     args = parser.parse_args()
     
     
@@ -331,7 +333,7 @@ def main():
     
     
     
-    config = BertConfig.from_pretrained(args.model_name_or_path, num_labels=3)
+    config = BertConfig.from_pretrained(args.model_name_or_path, num_labels=args.num_classes)
     
     # Prepare model
     model = BertForSequenceClassification.from_pretrained(args.model_name_or_path,args,config=config)
@@ -525,6 +527,7 @@ def main():
                         print("="*80)
                     else:
                         print("="*80)
+                    sys.stdout.flush()
     if args.do_test:
         del model
         gc.collect()
@@ -577,6 +580,7 @@ def main():
             gold_labels=np.concatenate(gold_labels,0)
             logits=np.concatenate(inference_labels,0)
             print(flag, accuracy(logits, gold_labels))
+            sys.stdout.flush()
             if flag=='test':
                 df=pd.read_csv(os.path.join(args.data_dir, file))
                 df['label_0']=logits[:,0]

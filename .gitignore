@@ -1,0 +1,7 @@
+*.pyc
+*.bin
+*.json
+*.txt
+*.csv
+__pycache__/*
+
